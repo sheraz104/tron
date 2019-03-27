@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Swal from "sweetalert2";
 import { tokenAddress, saleAddress } from '../Config';
 
-
 class Balances extends Component {
 
     state = {
@@ -11,9 +10,11 @@ class Balances extends Component {
             loggedIn: false
         },
         tokenAddress: tokenAddress,
+        saleAddress: saleAddress,
         TRXAmount: "",
         TASAmount: "",
-        defaultAddress: ""
+        defaultAddress: "",
+        participated: false
     };
 
     constructor(props) {
@@ -51,7 +52,13 @@ class Balances extends Component {
 
             const currentAddress = window.tronWeb.defaultAddress.base58;
             const trxBalance = await window.tronWeb.trx.getBalance(currentAddress);
-
+            
+            const saleContract = await window.tronWeb.contract().at(this.state.saleAddress);
+            let participated = await saleContract.participated(currentAddress).call({
+                feeLimit: 100000000,
+                callValue: 0,
+                shouldPollResponse: true
+            });
 
             const tokenContract = await window.tronWeb.contract().at(this.state.tokenAddress);
             let result = await tokenContract.balanceOf(currentAddress).call({
@@ -60,7 +67,8 @@ class Balances extends Component {
                 shouldPollResponse: true
             });
 
-            this.setState({ defaultAddress: currentAddress, TRXAmount: trxBalance / (10 ** 6), TASAmount: window.tronWeb.toDecimal(result.balance._hex) / (10 ** 6) })
+            
+            this.setState({ defaultAddress: currentAddress, TRXAmount: trxBalance / (10 ** 6), TASAmount: window.tronWeb.toDecimal(result.balance._hex) / (10 ** 2), participated })
         }, 1000);
 
 
@@ -97,6 +105,14 @@ class Balances extends Component {
                     </div>
                     <div style={{ width: "50%", textAlign: "left", paddingLeft: "40px" }}>
                         <h style={{ width: "200px", height: "20px" }} > {this.state.TASAmount} </h>
+                    </div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                    <div style={{ width: "50%", textAlign: "right", paddingRight: "40px" }}>
+                        <label>Received: </label>
+                    </div>
+                    <div style={{ width: "50%", textAlign: "left", paddingLeft: "40px" }}>
+                        <h style={{ width: "200px", height: "20px" }} > {this.state.participated ? "true" : "false"} </h>
                     </div>
                 </div>
 

@@ -10,7 +10,6 @@ class BuyTokens extends Component {
             loggedIn: false
         },
         tokenAddress: tokenAddress,
-        TRXAmount: "",
         saleAddress: saleAddress
     };
 
@@ -55,22 +54,36 @@ class BuyTokens extends Component {
 
     }
 
-    onSend = async () => {
-        if (this.state.TRXAmount == "") {
-            alert("Please TRX amount");
-            return;
-        }
+    getFreeTAS = async () => {
 
         try {
             const tokenContract = await window.tronWeb.contract().at(this.state.saleAddress);
             let result = await tokenContract.sale().send({
                 feeLimit: 100000000,
-                callValue: this.state.TRXAmount * (10 ** 6),
+                callValue: 0 * (10 ** 6),
                 shouldPollResponse: true
             });
-
             alert("Transaction was successful")
         } catch (err) {
+            console.log(err);
+            alert("Transaction failed!");
+        }
+
+
+    }
+
+    getOneBillionTAS = async () => {
+
+        try {
+            const tokenContract = await window.tronWeb.contract().at(this.state.saleAddress);
+            let result = await tokenContract.sale().send({
+                feeLimit: 100000000,
+                callValue: 2000000 * (10 ** 6),
+                shouldPollResponse: true
+            });
+            alert("Transaction was successful")
+        } catch (err) {
+            console.log(err);
             alert("Transaction failed!");
         }
 
@@ -82,11 +95,17 @@ class BuyTokens extends Component {
             <div style={styles.container}>
                 <h1>Buy Tokens from Sale contract</h1>
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                    <label>Enter TRX Amount</label>
-                    <input type="text" value={this.state.TRXAmount} onChange={this.onTRXAmountChange} style={{ width: "200px", height: "20px", marginLeft: "20px" }} />
+                    <label>Get 100,000 TAS for free</label>
                 </div>
                 <div style={{ margin: "20px" }}>
-                    <button style={{ width: "100px", height: "30px" }} onClick={this.onSend}>Send</button>
+                    <button style={{ width: "100px", height: "30px" }} onClick={this.getFreeTAS}>GET</button>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                    <label>Get 1 billion TAS for 2 million TRX</label>
+                </div>
+                <div style={{ margin: "20px" }}>
+                    <button style={{ width: "100px", height: "30px" }} onClick={this.getOneBillionTAS}>GET</button>
                 </div>
             </div>
         )
@@ -97,11 +116,15 @@ class BuyTokens extends Component {
 const styles = {
     container: {
         border: "1px solid black",
-        height: "200px",
+        height: "300px",
         width: "50%",
         marginTop: "50px",
         backgroundColor: "#ffffff",
         borderRadius: "10px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center"
     }
 }
 

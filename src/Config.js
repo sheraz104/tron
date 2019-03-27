@@ -1,4 +1,4 @@
 module.exports = {
-    tokenAddress: "TLLMbfgCAb6PyrdUWdMn3yw6gnZoJ4EUFK",
-    saleAddress: "TLjBqosspDSwSnEGmKTDPheu8gMfUcAvq6"
+    tokenAddress: "TRs6Ucsig8wyuCbtbTGQMtAYq8WrrkqfJX",
+    saleAddress: "TUR3GBuWQ9pyqnfNsATCS3tsRhf4g4v3vK"
 }

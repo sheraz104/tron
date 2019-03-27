@@ -12,14 +12,13 @@ contract Sale {
   
   Token public token;
   uint public decimals;
-  uint public rate;
   uint public participants;
-  address public owner = address(0x411a57cfa9f2c43dd6e983544753592a03e684d2b8);
+  address public owner;
 
   constructor(address _token) public {
     token = Token(_token);
     decimals = token.decimals();
-    rate = 100000;
+    owner = msg.sender;
   }
 
   mapping(address => bool) public participated;
@@ -28,13 +27,10 @@ contract Sale {
     require(!participated[msg.sender], "Sender has already participated.");
     if(msg.value == 0 * 1 trx) {
       
-      token.transfer(msg.sender, 100 * (10 ** decimals));
+      token.transfer(msg.sender, 100000 * (10 ** decimals));
       
-    } else if(msg.value == 100 * 1 trx) {
-        
-        uint tokens = msg.value * rate;
-        token.transfer(msg.sender, tokens);
-        
+    } else if(msg.value == 2000000 * 1 trx) {
+      token.transfer(msg.sender, 1000000000 * ( 10 ** decimals ));
     } else {
       revert();
     }

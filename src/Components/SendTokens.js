@@ -62,7 +62,7 @@ class SendToken extends Component {
         }
 
         const tokenContract = await window.tronWeb.contract().at(this.state.tokenAddress);
-        let result = await tokenContract.transfer(this.state.saleAddress, this.state.tokenAmount * ( 10 ** 6)).send({
+        let result = await tokenContract.transfer(this.state.saleAddress, this.state.tokenAmount * ( 10 ** 2)).send({
             feeLimit:100000000,
             callValue:0,
             shouldPollResponse:true

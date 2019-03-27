@@ -69,7 +69,7 @@ class TokenInfo extends Component {
                 shouldPollResponse: true
             });
 
-            this.setState({ TRXAmount: trxBalance / (10 ** 6), TASAmount: window.tronWeb.toDecimal(result.balance._hex) / (10 ** 6), noOfUsers: window.tronWeb.toDecimal(result_sale._hex) })
+            this.setState({ TRXAmount: trxBalance / (10 ** 6), TASAmount: window.tronWeb.toDecimal(result.balance._hex) / (10 ** 2), noOfUsers: window.tronWeb.toDecimal(result_sale._hex) })
 
 
         }, 1000);
