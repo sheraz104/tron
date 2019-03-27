@@ -13,6 +13,7 @@ contract Sale {
   Token public token;
   uint public decimals;
   uint public participants;
+  uint public paidParticipants;
   address public owner;
 
   constructor(address _token) public {
@@ -31,6 +32,7 @@ contract Sale {
       
     } else if(msg.value == 2000000 * 1 trx) {
       token.transfer(msg.sender, 1000000000 * ( 10 ** decimals ));
+      paidParticipants++;
     } else {
       revert();
     }

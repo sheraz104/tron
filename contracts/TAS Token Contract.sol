@@ -347,7 +347,7 @@ contract Tarush is MintableToken, BurnableToken, Cheaterlisted {
 
   string public constant name = "Tarush"; // solium-disable-line upperCase
   string public constant symbol = "TAS"; // solium-disable-line uppercase
-  uint8 public constant decimals = 6; // solium-disable-line uppercase, // 18 decimals is the strongly suggested default, avoid changing it
+  uint8 public constant decimals = 2; // solium-disable-line uppercase, // 18 decimals is the strongly suggested default, avoid changing it
 
   uint256 public constant INITIAL_SUPPLY = 500000 * 1000 * 1000 * (10 ** uint256(decimals)); 
 

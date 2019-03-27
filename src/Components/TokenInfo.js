@@ -13,7 +13,8 @@ class TokenInfo extends Component {
         TRXAmount: "",
         TASAmount: "",
         saleAddress: saleAddress,
-        noOfUsers: ""
+        noOfUsers: "",
+        paidParticipants: ""
 
     };
 
@@ -63,13 +64,23 @@ class TokenInfo extends Component {
 
 
             const saleContract = await window.tronWeb.contract().at(this.state.saleAddress);
-            let result_sale = await saleContract.participants().call({
+            let total_participants = await saleContract.participants().call({
                 feeLimit: 100000000,
                 callValue: 0,
                 shouldPollResponse: true
             });
 
-            this.setState({ TRXAmount: trxBalance / (10 ** 6), TASAmount: window.tronWeb.toDecimal(result.balance._hex) / (10 ** 2), noOfUsers: window.tronWeb.toDecimal(result_sale._hex) })
+            total_participants = window.tronWeb.toDecimal(total_participants._hex);
+
+            let paid_participants = await saleContract.paidParticipants().call({
+                feeLimit: 100000000,
+                callValue: 0,
+                shouldPollResponse: true
+            });
+
+            paid_participants = window.tronWeb.toDecimal(paid_participants._hex);
+
+            this.setState({ TRXAmount: trxBalance / (10 ** 6), TASAmount: window.tronWeb.toDecimal(result.balance._hex) / (10 ** 2), noOfUsers: total_participants, paidParticipants: paid_participants })
 
 
         }, 1000);
@@ -118,6 +129,16 @@ class TokenInfo extends Component {
                     </div>
                     <div style={{ width: "50%", textAlign: "left", paddingLeft: "40px" }}>
                         <h style={{ width: "200px", height: "20px", marginLeft: "20px" }} > {this.state.noOfUsers} </h>
+                    </div>
+                </div>
+
+
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                    <div style={{ width: "50%", textAlign: "right", paddingRight: "40px" }}>
+                        <label>Paid participants: </label>
+                    </div>
+                    <div style={{ width: "50%", textAlign: "left", paddingLeft: "40px" }}>
+                        <h style={{ width: "200px", height: "20px", marginLeft: "20px" }} > {this.state.paidParticipants} </h>
                     </div>
                 </div>
 
